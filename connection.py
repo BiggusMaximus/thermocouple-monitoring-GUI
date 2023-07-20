@@ -1,4 +1,4 @@
-from pymodbus.client.sync import ModbusSerialClient
+#from pymodbus.client.sync import ModbusSerialClient
 from pymodbus.exceptions import ConnectionException
 from pymodbus.exceptions import ModbusException
 import tkinter as tk
@@ -32,14 +32,14 @@ class connectionFrame(tk.Frame):
         self.grid(sticky="nsew")
         self.data = data
         self.connected_status = False
-        self.isStart_status= False
+        self.isStart_status = False
         self.clear_data_status = False
         self.data_frame = self.master.data_frame
         self.graph_frame = self.master.graph_frame
         self.table_frame = self.master.table_frame
 
         self.TIMING_LIST = [
-            "10s", "30s", "1m", "3m", "5m","10m", "15m", "30m", "1h", "Always Capture Data"    
+            "10s", "30s", "1m", "3m", "5m", "10m", "15m", "30m", "1h", "Always Capture Data"
         ]
         self.TIMING = [
             10, 30, 60, 180, 300, 600, 900, 1800, 3600, 1296000
@@ -118,32 +118,32 @@ class connectionFrame(tk.Frame):
             self, text="Connect", command=self.get_selected_values, activebackground='red', bg='#00ff00')
         self.connect_button.grid(
             row=7, column=0, sticky="nsew", padx=(0, 10), pady=(0, 10))
-        
+
         # choose timing capture
         self.timing_value = tk.StringVar()
         self.timing_value.set("Always Capture Data")
         self.choose_timing = ttk.Combobox(self, textvariable=self.timing_value,
-                            state="readonly", values=self.TIMING_LIST)
-        self.choose_timing.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=(0, 10))
+                                          state="readonly", values=self.TIMING_LIST)
+        self.choose_timing.grid(
+            row=8, column=0, columnspan=2, sticky="nsew", pady=(0, 10))
 
         # Start button
         self.start_button = tk.Button(
             self, text="▶︎", state=tk.DISABLED, command=self.start_collecting, activebackground='red', bg='#00ff00')
         self.start_button.grid(
             row=9, column=0, sticky="nsew", padx=(0, 10), pady=(0, 10))
-        
+
         # Stop button
         self.stop_button = tk.Button(
             self, text="||", state=tk.DISABLED, command=self.stop_collecting, activebackground='red', bg='red')
         self.stop_button.grid(
             row=9, column=1, sticky="nsew", padx=(10, 0), pady=(0, 10))
-        
+
         # Clear button
         self.clear_button = tk.Button(
             self, text="Clear Data", state=tk.DISABLED, command=self.clear_data, activebackground='red', bg='#00ff00')
         self.clear_button.grid(
             row=10, column=0, columnspan=2, sticky="nsew", padx=(0, 0), pady=(0, 10))
-
 
     def get_selected_values(self):
         baudrate = self.baudrate_value.get()
@@ -162,7 +162,6 @@ class connectionFrame(tk.Frame):
             self.connected_status = self.connect_modbus(port, STOP_BITS[STOP_BITS_LIST.index(
                 stopbits)],  DATA_BITS[DATA_BITS_LIST.index(bytesize)], PARITY[PARITY_LIST.index(parity)], int(baudrate))
             print(f"{self.connected_status}")
-
 
             if not (self.connected_status):
                 messagebox.showerror(
@@ -208,23 +207,23 @@ class connectionFrame(tk.Frame):
             status = False
 
         return status
-    
+
     def all_equal(self, iterable):
         g = groupby(iterable)
         return next(g, True) and not next(g, False)
-    
+
     def start_collecting(self):
         if ((self.all_equal([self.data_frame.checkbox_value_16[i].get() for i in range(16)])) and (self.all_equal([self.data_frame.checkbox_value_32[i].get() for i in range(16)]))):
             messagebox.showerror("Warning", "Select Channel First")
         else:
-            self.isStart_status= True
+            self.isStart_status = True
             self.clear_data_status = False
             self.start_button.configure(state="disabled", bg='red')
             self.stop_button.configure(state="normal", bg='#00ff00')
             self.clear_button.configure(state="normal", bg='#00ff00')
 
     def stop_collecting(self):
-        self.isStart_status= False
+        self.isStart_status = False
         self.stop_button.configure(state="disabled", bg='red')
         self.start_button.configure(state="normal", bg='#00ff00')
 
@@ -233,14 +232,14 @@ class connectionFrame(tk.Frame):
             self.stop_button.configure(state="disabled", bg='red')
             self.start_button.configure(state="normal", bg='#00ff00')
             self.clear_button.configure(state="disabled", bg='red')
-            self.graph_frame.ax.clear() 
-            self.graph_frame.canvas.draw() 
+            self.graph_frame.ax.clear()
+            self.graph_frame.canvas.draw()
             self.master.count_number = 0
             self.table_frame.count = 0
             self.graph_frame.data = {}
             for i in range(0, 32):
                 self.graph_frame.data[i] = []
             self.graph_frame.data["count"] = []
-            self.graph_frame.count = 0 
+            self.graph_frame.count = 0
             self.table_frame.tree.delete(*self.table_frame.tree.get_children())
             self.clear_data_status = True
