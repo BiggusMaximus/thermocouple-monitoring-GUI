@@ -27,7 +27,7 @@ class connectionFrame(tk.Frame):
                          relief=tk.RIDGE, borderwidth=5, highlightthickness=2)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=3)
-        self.rowconfigure(tuple(range(2, 11)), weight=1)
+        self.rowconfigure(tuple(range(2, 12)), weight=1)
         self.columnconfigure(tuple(range(2)), weight=1)
         self.grid(sticky="nsew")
         self.data = data
@@ -49,14 +49,19 @@ class connectionFrame(tk.Frame):
         label = tk.Label(self, text="THERMOCOUPLE\nMODBUS",
                          font=("Arial", 14,  "bold"))
         label.grid(row=0, column=0, columnspan=2, sticky="ew")
-        self.image = Image.open('logo.png')
-        basewidth = 80
-        wpercent = (basewidth/float(self.image.size[0]))
-        hsize = int((float(self.image.size[1])*float(wpercent)))
-        self.image = self.image.resize(
-            (basewidth, hsize), Image.Resampling.LANCZOS)
-        self.image = ImageTk.PhotoImage(self.image)
-        self.canvas = tk.Label(self, image=self.image)
+
+        label_creator = tk.Label(self, text="Developed by : Annastya Bagas Dewantara",
+                                 font=("Times New Roman", 7), state='disabled')
+        label_creator.grid(row=11, column=0, columnspan=2, sticky="ew")
+
+        # self.image = Image.open('logo.png')
+        # basewidth = 80
+        # wpercent = (basewidth/float(self.image.size[0]))
+        # hsize = int((float(self.image.size[1])*float(wpercent)))
+        # self.image = self.image.resize(
+        #     (basewidth, hsize), Image.LANCZOS)
+        # self.image = ImageTk.PhotoImage(self.image)
+        # self.canvas = tk.Label(self, image=self.image)
         # self.canvas.grid(
         #     row=1, column=0, columnspan=3, padx=5, pady=5, sticky="nswe")
 
